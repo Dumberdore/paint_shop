@@ -13,10 +13,6 @@ class Customer:
 
 	def _sortByTypeThenId(self, input_list):
 
-		# Divide into 2 lists 
-		# sort indivisual lists
-		# append after one another
-
 		gloss_list = []
 		matt_list = []
 
@@ -73,17 +69,9 @@ class PaintShop:
 
 
 def print_current_state_of_ds(all_customers, all_paint, solution):
-	for cust in all_customers:
-		print(cust) 
-	
-	print()
-	
-	for idx, paint in all_paint.items():
-		print(paint)
 
-	print()
-
-	print(str(sorted(solution.items())))
+	solution_string = ' '.join([value for (key, value) in sorted(solution.items())])
+	print(solution_string)
 
 def satisfy_all_customers_with_ids(all_customers, request_list):
 	
@@ -96,6 +84,22 @@ def remove_conflicts(curr_paint_requsts, remove_list):
 	for x in remove_list:
 		del curr_paint_requsts[x]
 
+def anyCustUnsatisfied(customer_list):
+
+	for c in customer_list:
+		if c.is_satisfied == False:
+			return True
+
+	return False # All customer are satisfied
+
+def makeRemainingColorsInGloss(solution_set, no_of_paints):
+
+	for x in range(1,no_of_paints+1):
+
+		if str(x) not in solution_set:
+			solution_set[str(x)] = 'G'
+
+
 def main():
 
 	parser = argparse.ArgumentParser()
@@ -103,10 +107,12 @@ def main():
 	args = parser.parse_args()
 
 	paint_shop = PaintShop()
+	paints_to_be_made = 0
 
 	with open(args.inputFile) as f:
 		xRequest = f.readlines()
 		xRequest = [x.strip() for x in xRequest]
+		paints_to_be_made = int(xRequest[0])
 
 	# Form desired Data structures - Paints
 	all_paint = {}
@@ -114,34 +120,23 @@ def main():
 		curr_paint_requested = PaintRequested(x)
 		all_paint[x] = curr_paint_requested
 
-
 	# Form desired Data structures - Customers
 	customer_records = sorted(xRequest[1:], key = len)
 	all_customers = []
 
-	# print_current_state_of_ds(all_customers, all_paint, paint_shop.solution_set)
-	# print()
-
 	for index, customer_record in enumerate(customer_records):
 		trimmed_request = customer_record.replace(' ','')
 		request_pairs = [trimmed_request[i:i+2] for i in range(0, len(trimmed_request), 2)]
-		# print(str(request_pairs))
 		request_dict = {}
 		for paint in request_pairs:
 			request_dict[paint[0]] = paint[1]
 
 		curr_customer = Customer(request_dict, index + 1)
 
-		print(str(curr_customer))
-
 		for paint_id, paint_type in curr_customer.request_list:
-			# print(paint_id +":"+ paint_type)
 			(all_paint[int(paint_id)]).addCustomerRequest(curr_customer.cust_id, paint_type)
-			# print("Adding " + curr_customer.cust_id + "to " + str(all_paint[int(paint_id)]))
 		
 		all_customers.append(curr_customer) 
-
-		print('Done For Customer : ' + str(curr_customer));
 
 	print_current_state_of_ds(all_customers, all_paint, paint_shop.solution_set)
 
@@ -160,8 +155,13 @@ def main():
 						break;
 					
 
+	if anyCustUnsatisfied(all_customers) :
+		print("No solution exists")
+		return 1
 
+	makeRemainingColorsInGloss(paint_shop.solution_set, paints_to_be_made)
 	print_current_state_of_ds(all_customers, all_paint, paint_shop.solution_set)
+	return 0
 
 if __name__ == '__main__':
         main()
