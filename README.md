@@ -11,10 +11,10 @@ For each customer, there is at least one color they like.
 You make as few mattes as possible (because they are more expensive).
 Your program should accept an input file as a command line argument, and print a result to standard out. An example input file is:
 ```
-  5
-  1 M 3 G 5 G
-  2 G 3 M 4 G
-  5 M
+5
+1 M 3 G 5 G
+2 G 3 M 4 G
+5 M
 ```  
 The first line specifies how many colors there are.
 
