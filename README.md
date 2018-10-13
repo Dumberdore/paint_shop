@@ -74,3 +74,6 @@ M M
 
 Solution:
 
+[Please check the Rundown File](run_down_on_solution.md)
+
+All the code is in [paintShop.py](paintShop.py)
