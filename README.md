@@ -1,6 +1,6 @@
-#The Paint-Shop Problem
+# The Paint-Shop Problem
 
-##The Problem:
+## The Problem:
 
 You run a paint shop, and there are a few different colors of paint you can prepare.  Each color can be either "gloss" or "matte".
 
@@ -74,7 +74,7 @@ M M
 ```
 
 
-##Solution:
+## Solution:
 
 [Please check the Rundown File](run_down_on_solution.md)
 
